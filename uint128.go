@@ -37,6 +37,46 @@ func (u Uint128) Equals64(v uint64) bool {
 	return u.Lo == v && u.Hi == 0
 }
 
+// LessThan returns true if u < v.
+func (u Uint128) LessThan(v Uint128) bool {
+	return u.Cmp(v) == -1
+}
+
+// LessThan64 returns true if u < v.
+func (u Uint128) LessThan64(v uint64) bool {
+	return u.Cmp64(v) == -1
+}
+
+// GreaterThan returns true if u > v.
+func (u Uint128) GreaterThan(v Uint128) bool {
+	return u.Cmp(v) == 1
+}
+
+// GreaterThan64 returns true if u > v.
+func (u Uint128) GreaterThan64(v uint64) bool {
+	return u.Cmp64(v) == 1
+}
+
+// LessThanOrEqual returns true if u <= v.
+func (u Uint128) LessThanOrEqual(v Uint128) bool {
+	return u.Cmp(v) != 1
+}
+
+// LessThanOrEqual64 returns true if u <= v.
+func (u Uint128) LessThanOrEqual64(v uint64) bool {
+	return u.Cmp64(v) != 1
+}
+
+// GreaterThanOrEqual returns true if u >= v.
+func (u Uint128) GreaterThanOrEqual(v Uint128) bool {
+	return u.Cmp(v) != -1
+}
+
+// GreaterThanOrEqual64 returns true if u >= v.
+func (u Uint128) GreaterThanOrEqual64(v uint64) bool {
+	return u.Cmp64(v) != -1
+}
+
 // Cmp compares u and v and returns:
 //
 //	-1 if u <  v
@@ -138,7 +178,7 @@ func (u Uint128) Sub(v Uint128) Uint128 {
 	lo, borrow := bits.Sub64(u.Lo, v.Lo, 0)
 	hi, borrow := bits.Sub64(u.Hi, v.Hi, borrow)
 	if borrow != 0 {
-		panic("underflow")
+		panic("overflow")
 	}
 	return Uint128{lo, hi}
 }
@@ -156,7 +196,7 @@ func (u Uint128) Sub64(v uint64) Uint128 {
 	lo, borrow := bits.Sub64(u.Lo, v, 0)
 	hi, borrow := bits.Sub64(u.Hi, 0, borrow)
 	if borrow != 0 {
-		panic("underflow")
+		panic("oveflow")
 	}
 	return Uint128{lo, hi}
 }
